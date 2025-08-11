@@ -24,7 +24,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* Ensure it takes full viewport height */
             color: var(--beige-80);
             background-color: var(--black-bg);
             background-image: 
@@ -47,10 +47,10 @@
         .register-container {
             backdrop-filter: blur(20px) saturate(1.5); /* Stronger blur and saturation for mirror */
             background: var(--mirror-effect-bg); /* More transparent background */
-            padding: 3rem 2.5rem; /* Consistent padding */
+            padding: 3rem 2.5rem; /* Base padding */
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); /* Stronger, darker shadow */
-            width: 380px; /* Consistent width */
+            width: 380px; /* Fixed width for larger screens */
             max-width: 90%; /* Responsive sizing */
             border: 1px solid var(--mirror-border); /* Thicker, more defined border for mirror edge */
             position: relative;
@@ -71,6 +71,7 @@
             color: var(--beige-100);
             text-shadow: none; /* No text glow for cleaner look */
             letter-spacing: 0.05em;
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
         }
 
         .form-group {
@@ -80,7 +81,7 @@
         label {
             display: block;
             margin-bottom: 0.6rem;
-            font-size: 0.95rem;
+            font-size: clamp(0.95rem, 2.5vw, 1rem); /* Responsive font size */
             color: var(--beige-60);
             font-weight: 500;
         }
@@ -90,7 +91,7 @@
             padding: 0.8rem 0.7rem;
             border: 1px solid rgba(255, 255, 255, 0.2); /* Slightly more defined border */
             border-radius: 8px; /* Consistent border-radius */
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
             background: var(--input-bg);
             color: var(--beige-100);
             outline: none;
@@ -115,7 +116,7 @@
             border-radius: 8px; /* Consistent border-radius */
             background: linear-gradient(135deg, #A88B4E, #D4AF37); /* Gold/Beige gradient */
             color: var(--dark-gray); /* Dark text on button */
-            font-size: 1.05rem;
+            font-size: clamp(1rem, 2.5vw, 1.05rem); /* Responsive font size */
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
@@ -155,7 +156,7 @@
         .extra-links {
             text-align: center;
             margin-top: 1.5rem; /* Consistent spacing */
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 2.5vw, 0.9rem); /* Responsive font size */
             color: var(--beige-80);
         }
 
@@ -189,7 +190,71 @@
             transform: scaleX(1);
         }
 
-        /* Removed dark mode toggle styles as they are not part of the new theme */
+        /* --- Media Queries for Responsiveness --- */
+
+        /* Tablets and larger phones */
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 2.5rem 2rem; /* Slightly less padding */
+                width: 95%; /* More fluid width */
+            }
+
+            h2 {
+                margin-bottom: 2rem;
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+
+            label {
+                font-size: clamp(0.85rem, 2.8vw, 0.95rem);
+            }
+
+            input {
+                padding: 0.7rem 0.6rem;
+                font-size: clamp(0.9rem, 2.8vw, 1rem);
+            }
+
+            .btn {
+                padding: 0.8rem;
+                font-size: clamp(0.95rem, 3vw, 1.05rem);
+            }
+
+            .extra-links {
+                margin-top: 1.2rem;
+                font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            }
+        }
+
+        /* Smaller phones */
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 2rem 1.5rem; /* Even less padding */
+                border-radius: 12px; /* Slightly smaller border-radius */
+            }
+
+            h2 {
+                margin-bottom: 1.8rem;
+                font-size: clamp(1.5rem, 7vw, 2rem);
+            }
+
+            label {
+                font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            }
+
+            input {
+                padding: 0.6rem 0.5rem;
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            }
+
+            .btn {
+                padding: 0.7rem;
+                font-size: clamp(0.9rem, 3.8vw, 1rem);
+            }
+
+            .extra-links {
+                margin-top: 1rem;
+                font-size: clamp(0.75rem, 3vw, 0.85rem);
+            }
+        }
     </style>
 </head>
 <body>
@@ -219,8 +284,6 @@
             </div>
         </form>
     </div>
-
-    <!-- Removed the dark mode toggle script -->
 
 </body>
 </html>
