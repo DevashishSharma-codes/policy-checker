@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Policy Portal - Home</title>
+
+  <!-- Optional font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-900: #070606;            /* deep black */
+      --beige-100: #f5e6cc;        /* light beige */
+      --beige-200: #efe1b8;        /* slightly darker beige */
+      --muted: rgba(245,230,204,0.7);
+      --grid: rgba(255,255,255,0.02);
+    }
+
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{background:var(--bg-900);color:var(--beige-100);overflow-x:hidden}
+
+    /* subtle grid background (fixed) */
+    body::before{
+      content:"";
+      position:fixed;inset:0;z-index:0;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events:none;
+      opacity:1;
+    }
+
+    /* Page layout */
+    .page { position:relative; min-height:100vh; display:flex; flex-direction:column; z-index:1; }
+
+    /* Header */
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:1rem; padding:18px 48px; 
+      border-bottom:1px solid rgba(245,230,204,0.06);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+    }
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.1rem;color:var(--beige-100)}
+    .nav { display:flex; gap:26px; align-items:center; }
+    .nav a { color:var(--muted); text-decoration:none; font-weight:600; }
+    .nav a:hover { color:var(--beige-100); }
+    
+    /* Login/Logout Button Styling (Unified) */
+    .auth-button {
+      background: linear-gradient(180deg, var(--beige-100), var(--beige-200));
+      color:#0b0b0b;
+      border: none;
+      padding: 8px 18px; 
+      border-radius: 20px; 
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 4px 12px rgba(14,14,14,0.3); 
+      transition: transform .18s ease, box-shadow .18s;
+      display:inline-flex;
+      align-items:center;
+      font-size:14px; 
+      text-decoration: none; 
+      white-space: nowrap; /* Prevent button text from wrapping */
+    }
+    .auth-button:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 16px rgba(14,14,14,0.4); 
+    }
+
+    .profile {
+      width:40px;height:40px;border-radius:50%;background:var(--beige-100);display:grid;place-items:center;color:#0b0b0b;font-weight:700;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+    }
+
+    /* HERO */
+    .hero {
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 48px 24px;
+      min-height: 62vh;
+    }
+
+    .hero-inner{
+      position:relative;
+      max-width:980px;
+      width:100%;
+      z-index:5; /* on top of orbit */
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+    }
+
+    h1 {
+      margin:0;
+      font-size: clamp(32px, 6.5vw, 72px);
+      line-height:1;
+      font-weight:800;
+      letter-spacing: -0.02em;
+      color:var(--beige-100);
+      text-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    }
+
+    .sub {
+      color:var(--muted);
+      max-width:760px;
+      margin:0 auto;
+      font-size: clamp(14px, 1.6vw, 18px);
+    }
+
+    .hero-actions{ display:flex; gap:18px; margin-top:18px; }
+
+    .btn {
+      background: linear-gradient(180deg, var(--beige-100), var(--beige-200));
+      color:#0b0b0b;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 40px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(14,14,14,0.45);
+      transition: transform .18s ease, box-shadow .18s;
+      display:inline-flex;align-items:center;gap:10px;font-size:15px;
+    }
+    .btn:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(14,14,14,0.6); }
+
+    /* ORBIT (behind main text) */
+    .orbit-wrap {
+      position:absolute;
+      left:50%; top:50%;
+      width:520px; height:520px;
+      transform: translate(-50%,-50%);
+      z-index:2;       /* behind hero-inner (z-index:5) */
+      pointer-events:none;
+    }
+
+    /* spinning container rotates the ring */
+    .orbit {
+      position:relative;
+      width:100%; height:100%;
+      border-radius:50%;
+      transform-origin:center center;
+      animation: rotate-slow 28s linear infinite;
+    }
+
+    @keyframes rotate-slow {
+      from{ transform: rotate(0deg); }
+      to{ transform: rotate(360deg); }
+    }
+
+    /* an orbit item sits at center then translated outward via rotate/translate */
+    .orbit .item {
+      position:absolute;
+      left:50%; top:50%;
+      transform-origin: 0 0;
+      /* size */
+      width:56px; height:56px;
+      margin:-28px 0 0 -28px;   /* center the item */
+      display:grid; place-items:center;
+      border-radius:10px;
+      background: rgba(245,230,204,0.06);
+      color:var(--beige-100);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+      border: 1px solid rgba(245,230,204,0.12);
+      transition: transform .3s;
+    }
+
+    /* Keep icon upright: we counter-rotate inside */
+    .orbit .item .inner { transform-origin:center center; font-size:24px; }
+
+    /* positions for 8 items around circle, using rotate(angle) translate(radius) rotate(-angle) */
+    /* radius about 210px inside 520 container */
+    .pos0 { transform: rotate(0deg) translate(0, -210px) rotate(0deg); }
+    .pos1 { transform: rotate(45deg) translate(0, -210px) rotate(-45deg); }
+    .pos2 { transform: rotate(90deg) translate(0, -210px) rotate(-90deg); }
+    .pos3 { transform: rotate(135deg) translate(0, -210px) rotate(-135deg); }
+    .pos4 { transform: rotate(180deg) translate(0, -210px) rotate(-180deg); }
+    .pos5 { transform: rotate(225deg) translate(0, -210px) rotate(-225deg); }
+    .pos6 { transform: rotate(270deg) translate(0, -210px) rotate(-270deg); }
+    .pos7 { transform: rotate(315deg) translate(0, -210px) rotate(-315deg); }
+
+    /* slight hover pop for each item (won't interfere with click because pointer-events none on wrapper) */
+    .orbit .item:hover { transform: scale(1.06); }
+
+    /* Smaller icon label area under buttons (optional) */
+    .hero-extra { margin-top: 10px; color: rgba(245,230,204,0.5); font-size:13px; }
+
+    /* Modal (upload & policy check) */
+    .modal {
+      display:none;
+      position:fixed; inset:0; z-index:60;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      align-items:center; justify-content:center;
+    }
+    .modal.open { display:flex; }
+    .modal-card {
+      /* Increased width for policy check modal */
+      width: 700px; /* Increased from 380px */
+      max-width: 90%; /* Ensure responsiveness */
+      padding:25px 30px; /* Slightly more padding */
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(245,230,204,0.08); color:var(--beige-100);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .modal-card h3 { margin:0 0 12px 0; font-size:20px; /* Slightly larger heading */ }
+    .file-input {
+      width:100%; padding: 10px; border-radius:8px; border:1px dashed rgba(245,230,204,0.08);
+      background: rgba(245,230,204,0.02); color:var(--beige-100);
+    }
+    .close-x { position:absolute; right:18px; top:18px; color:rgba(245,230,204,0.6); cursor:pointer; font-weight:700; }
+    
+    /* Policy Check Modal specific styles */
+    .policy-question-input {
+        width: 100%;
+        padding: 12px; /* Increased padding */
+        border-radius: 8px;
+        border: 1px solid rgba(245,230,204,0.08);
+        background: rgba(245,230,204,0.02);
+        color: var(--beige-100);
+        margin-top: 10px;
+        resize: vertical;
+        min-height: 120px; /* Increased min-height */
+        font-size: 1em; /* Ensure readable font size */
+        line-height: 1.5;
+    }
+    .policy-result-area {
+        margin-top: 15px;
+        padding: 15px; /* Increased padding */
+        border-radius: 8px;
+        background: rgba(245,230,204,0.02);
+        border: 1px dashed rgba(245,230,204,0.05);
+        min-height: 150px; /* Increased min-height for more space */
+        color: var(--muted);
+        font-size: 1em; /* Ensure readable font size */
+        line-height: 1.6; /* Increased line height for readability */
+        white-space: pre-wrap; /* Preserve whitespace and wrap text */
+        overflow-y: auto; /* Add scroll if content overflows */
+        max-height: 400px; /* Max height for very long responses */
+    }
+    .loading-spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid var(--beige-100);
+        width: 20px;
+        height: 20px;
+        -webkit-animation: spin 1s linear infinite; /* Safari */
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* File card adjustments for policy check button */
+    .file-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding:14px;border-radius:10px;background:rgba(255,255,255,0.015);border:1px solid rgba(245,230,204,0.03);
+    }
+    .file-card-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+    .file-card .btn { /* Reuse existing btn styles with adjustments */
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 6px;
+        background: var(--beige-100); /* Use beige directly for smaller button */
+        color: var(--bg-900);
+        box-shadow: none;
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+    .file-card .btn:hover {
+        background: var(--beige-200);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+
+    /* Responsive tweaks */
+    @media (max-width:820px){
+      .orbit-wrap{ width:380px; height:380px; }
+      .pos0,.pos1,.pos2,.pos3,.pos4,.pos5,.pos6,.pos7 { /* reduce radius on small screens */
+        transform: rotate(var(--r,0deg)) translate(0, -160px) rotate(0deg);
+      }
+      /* Adjust modal width for smaller screens */
+      .modal-card {
+          width: 90%; /* Max width on small screens */
+          padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <header>
+      <div class="brand">📜 <span style="letter-spacing:0.6px">Policy Portal</span></div>
+
+      <nav class="nav" aria-label="Main nav">
+        <a href="/home">Home</a>
+        <a href="#">Policies</a>
+        <a href="#">About</a>
+      </nav>
+      
+      <% if (user) { %>
+        <!-- If user is logged in, show Logout button and Profile initial -->
+        <a href="/user/logout" class="auth-button">Logout</a>
+        <div class="profile" title="Profile"><%= user.username ? user.username.charAt(0).toUpperCase() : 'P' %></div>
+      <% } else { %>
+        <!-- If user is NOT logged in, show Login button -->
+        <a href="/user/login" class="auth-button">Login</a>
+        <div class="profile" title="Profile">?</div> <!-- Placeholder for guest profile -->
+      <% } %>
+    </header>
+
+    <!-- HERO -->
+    <main class="hero" role="main">
+
+      <!-- orbit wrapper (behind main text) -->
+      <div class="orbit-wrap" aria-hidden="true">
+        <div class="orbit" role="presentation">
+          <!-- 8 items -->
+          <div class="item pos0"><div class="inner">📄</div></div>
+          <div class="item pos1"><div class="inner">✅</div></div>
+          <div class="item pos2"><div class="inner">📑</div></div>
+          <div class="item pos3"><div class="inner">🗂️</div></div>
+          <div class="item pos4"><div class="inner">📝</div></div>
+          <div class="item pos5"><div class="inner">🔒</div></div>
+          <div class="item pos6"><div class="inner">📤</div></div>
+          <div class="item pos7"><div class="inner">📋</div></div>
+        </div>
+      </div>
+
+      <!-- center content (on top) -->
+      <div class="hero-inner">
+        <h1>Upload, Check, Apply</h1>
+        <p class="sub">Quickly upload your policy form, check your eligibility and get matched with the best plans — secure, fast and reliable.</p>
+
+        <div class="hero-actions">
+          <button class="btn" id="openUploadBtn">📤 Upload Form</button>
+          <button class="btn" id="viewBtn">📄 View Details</button>
+        </div>
+
+        <div class="hero-extra">Trusted · Secure · Fast checks</div>
+      </div>
+
+    </main>
+
+    <!-- Recent uploads section -->
+    <section style="padding:40px 48px; color:var(--muted);">
+      <div style="max-width:1200px;margin:0 auto;">
+        <h3 style="color:var(--beige-100); margin-bottom:10px;">Recent uploads</h3>
+        <p style="margin:0 0 16px 0;">(Click on a file name to open the PDF or "Check Policy" to analyze.)</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+            <% if (files && files.length > 0) { %>
+                <% files.forEach(function(file) { %>
+                    <div class="file-card">
+                        <div>
+                            <a href="<%= file.fileUrl %>" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                                <div style="font-weight:700;color:var(--beige-100)">
+                                    <%= file.fileName %>
+                                </div>
+                            </a>
+                            <div style="font-size:13px;color:var(--muted)">Uploaded <%= new Date(file.uploadedAt).toLocaleDateString() %></div>
+                        </div>
+                        <div class="file-card-actions">
+                            <button class="btn check-policy-btn" data-file-id="<%= file._id %>">Check Policy</button>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div style="padding:14px;border-radius:10px;background:rgba(255,255,255,0.015);border:1px solid rgba(245,230,204,0.03); grid-column: 1 / -1;">
+                    <p style="font-weight:700;color:var(--muted); text-align:center; margin:0;">No files uploaded yet.</p>
+                </div>
+            <% } %>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- UPLOAD MODAL -->
+  <div id="uploadModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div style="position:relative;">
+        <div class="close-x" id="closeUploadModal">✕</div>
+        <h3>Upload Policy PDF</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+          <input class="file-input" type="file" name="policy" accept="application/pdf" required />
+          <div style="display:flex;gap:10px;margin-top:14px;justify-content:flex-end">
+            <button type="button" class="btn" id="cancelUpload">Cancel</button>
+            <button type="submit" class="btn">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLICY CHECK MODAL -->
+  <div id="policyCheckModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+        <div style="position:relative;">
+            <div class="close-x" id="closePolicyCheckModal">✕</div>
+            <h3>Check Policy Applicability</h3>
+            <p>File: <strong id="policyCheckFileName"></strong></p>
+            <textarea id="policyQuestionInput" class="policy-question-input" placeholder="e.g., Is this policy applicable for individuals over 60 years old with pre-existing conditions?"></textarea>
+            <div style="display:flex;gap:10px;margin-top:14px;justify-content:flex-end; align-items:center;">
+                <span id="loadingPolicyCheck" class="loading-spinner" style="display:none;"></span>
+                <button type="button" class="btn" id="submitPolicyCheck">Analyze Policy</button>
+            </div>
+            <div class="policy-result-area" id="policyResultArea">
+                Your analysis result will appear here.
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    // Wrap all JavaScript in DOMContentLoaded to ensure elements are loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- UPLOAD MODAL LOGIC ---
+        const openUploadBtn = document.getElementById('openUploadBtn');
+        const uploadModal = document.getElementById('uploadModal');
+        const closeUploadModal = document.getElementById('closeUploadModal');
+        const cancelUpload = document.getElementById('cancelUpload');
+
+        if (openUploadBtn) {
+            openUploadBtn.addEventListener('click', () => {
+                uploadModal.classList.add('open');
+                uploadModal.setAttribute('aria-hidden','false');
+            });
+        }
+        
+        closeUploadModal.addEventListener('click', () => {
+            uploadModal.classList.remove('open');
+            uploadModal.setAttribute('aria-hidden','true');
+        });
+        cancelUpload.addEventListener('click', () => {
+            uploadModal.classList.remove('open');
+            uploadModal.setAttribute('aria-hidden','true');
+        });
+
+        document.querySelector('#uploadModal .modal-card')?.addEventListener('click', (e) => e.stopPropagation());
+        uploadModal.addEventListener('click', (e) => {
+          if (e.target === uploadModal) {
+            uploadModal.classList.remove('open');
+            uploadModal.setAttribute('aria-hidden','true');
+          }
+        });
+
+        /* Accessibility: pause orbit animation while interacting (optional) */
+        const orbit = document.querySelector('.orbit');
+        if (openUploadBtn && orbit) {
+            // Corrected variable name from openBtn to openUploadBtn
+            openUploadBtn.addEventListener('mouseenter', ()=> orbit.style.animationPlayState='paused');
+            openUploadBtn.addEventListener('mouseleave', ()=> orbit.style.animationPlayState='running');
+        }
+
+        // --- POLICY CHECK MODAL LOGIC ---
+        const policyCheckModal = document.getElementById('policyCheckModal');
+        const closePolicyCheckModal = document.getElementById('closePolicyCheckModal');
+        const policyCheckFileName = document.getElementById('policyCheckFileName');
+        const policyQuestionInput = document.getElementById('policyQuestionInput');
+        const submitPolicyCheckBtn = document.getElementById('submitPolicyCheck');
+        const policyResultArea = document.getElementById('policyResultArea');
+        const loadingPolicyCheck = document.getElementById('loadingPolicyCheck');
+        let currentFileId = null; // Store the ID of the file being checked
+
+        // This ensures the buttons are found after the DOM is ready
+        document.querySelectorAll('.check-policy-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                currentFileId = event.target.dataset.fileId;
+                const fileName = event.target.closest('.file-card').querySelector('a div').textContent.trim();
+                policyCheckFileName.textContent = fileName;
+                policyQuestionInput.value = ''; // Clear previous question
+                policyResultArea.textContent = 'Your analysis result will appear here.'; // Clear previous result
+                policyCheckModal.classList.add('open');
+                policyCheckModal.setAttribute('aria-hidden', 'false');
+            });
+        });
+
+        closePolicyCheckModal.addEventListener('click', () => {
+            policyCheckModal.classList.remove('open');
+            policyCheckModal.setAttribute('aria-hidden', 'true');
+        });
+
+        document.querySelector('#policyCheckModal .modal-card')?.addEventListener('click', (e) => e.stopPropagation());
+        policyCheckModal.addEventListener('click', (e) => {
+            if (e.target === policyCheckModal) {
+                policyCheckModal.classList.remove('open');
+                policyCheckModal.setAttribute('aria-hidden','true');
+            }
+        });
+
+        submitPolicyCheckBtn.addEventListener('click', async () => {
+            const question = policyQuestionInput.value.trim();
+            if (!question) {
+                alert('Please enter a question to analyze the policy.');
+                return;
+            }
+            if (!currentFileId) {
+                alert('No file selected for policy check.');
+                return;
+            }
+
+            policyResultArea.textContent = 'Analyzing...';
+            loadingPolicyCheck.style.display = 'inline-block'; // Show spinner
+            submitPolicyCheckBtn.disabled = true; // Disable button
+
+            try {
+                const response = await fetch(`/check-policy/${currentFileId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ policyQuestion: question })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to get policy analysis.');
+                }
+
+                const data = await response.json();
+                policyResultArea.textContent = data.policyResult;
+
+            } catch (error) {
+                console.error('Policy check error:', error);
+                policyResultArea.textContent = 'Error: ' + error.message;
+            } finally {
+                loadingPolicyCheck.style.display = 'none'; // Hide spinner
+                submitPolicyCheckBtn.disabled = false; // Re-enable button
+            }
+        });
+    }); // End DOMContentLoaded
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black-bg: #1A1A1A;
+            --dark-gray: #282828;
+            --white-grid-line: rgba(255, 255, 255, 0.08); /* White with some transparency */
+            --beige-100: #F5E6CC;
+            --beige-80: rgba(245, 230, 204, 0.8);
+            --beige-60: rgba(245, 230, 204, 0.6);
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --mirror-effect-bg: rgba(20, 20, 20, 0.4); /* Slightly transparent for mirror effect */
+            --mirror-border: rgba(245, 230, 204, 0.15); /* Distinct border for mirror edge */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--beige-80);
+            background-color: var(--black-bg);
+            background-image: 
+                linear-gradient(0deg, transparent 24.5%, var(--white-grid-line) 24.7%, var(--white-grid-line) 25.3%, transparent 25.5%, transparent 74.5%, var(--white-grid-line) 74.7%, var(--white-grid-line) 75.3%, transparent 75.5%, transparent),
+                linear-gradient(90deg, transparent 24.5%, var(--white-grid-line) 24.7%, var(--white-grid-line) 25.3%, transparent 25.5%, transparent 74.5%, var(--white-grid-line) 74.7%, var(--white-grid-line) 75.3%, transparent 75.5%, transparent);
+            background-size: 200px 200px; /* Bigger grid size */
+            background-repeat: repeat;
+            animation: backgroundPan 30s linear infinite; /* Subtle background movement */
+        }
+
+        @keyframes backgroundPan {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 200px 200px; /* Moves the grid */
+            }
+        }
+
+        .register-container {
+            backdrop-filter: blur(20px) saturate(1.5); /* Stronger blur and saturation for mirror */
+            background: var(--mirror-effect-bg); /* More transparent background */
+            padding: 3rem 2.5rem; /* Consistent padding */
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); /* Stronger, darker shadow */
+            width: 380px; /* Consistent width */
+            max-width: 90%; /* Responsive sizing */
+            border: 1px solid var(--mirror-border); /* Thicker, more defined border for mirror edge */
+            position: relative;
+            overflow: hidden; /* For pseudo-element effects */
+            transform: perspective(1000px) rotateY(0deg) scale(1); /* Initial 3D state */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .register-container:hover {
+            transform: perspective(1000px) rotateY(3deg) scale(1.03); /* More pronounced 3D tilt on hover */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8); /* Darker shadow on hover */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2.5rem; /* Consistent spacing */
+            font-weight: 700;
+            color: var(--beige-100);
+            text-shadow: none; /* No text glow for cleaner look */
+            letter-spacing: 0.05em;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem; /* Consistent spacing */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--beige-60);
+            font-weight: 500;
+        }
+
+        input {
+            width: calc(100% - 1.4rem); /* Adjust for padding */
+            padding: 0.8rem 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Slightly more defined border */
+            border-radius: 8px; /* Consistent border-radius */
+            font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--beige-100);
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input::placeholder {
+            color: var(--beige-60);
+            opacity: 0.7;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.12); /* Slightly less bright on focus */
+            border-color: var(--beige-100); /* Beige focus border */
+            box-shadow: 0 0 15px rgba(245, 230, 204, 0.2); /* Soft, subtle glow for focus */
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem; /* Increased padding */
+            border: none;
+            border-radius: 8px; /* Consistent border-radius */
+            background: linear-gradient(135deg, #A88B4E, #D4AF37); /* Gold/Beige gradient */
+            color: var(--dark-gray); /* Dark text on button */
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.03em;
+            position: relative; /* For the pseudo-element glow */
+            overflow: hidden;
+            transform: translateZ(0); /* For smoother 3D transforms */
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3); /* Brighter for mirror reflection */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.02); /* More pronounced lift and subtle scale */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(245, 230, 204, 0.3); /* Subtle beige glow on button hover */
+            background: linear-gradient(135deg, #B99C5F, #E0C14D); /* Slightly lighter gradient on hover */
+        }
+
+        .btn:hover:before {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+
+        .extra-links {
+            text-align: center;
+            margin-top: 1.5rem; /* Consistent spacing */
+            font-size: 0.9rem;
+            color: var(--beige-80);
+        }
+
+        .extra-links a {
+            color: var(--beige-100); /* Use beige for links */
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .extra-links a:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--beige-100);
+            bottom: -3px;
+            left: 0;
+            transform-origin: right;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .extra-links a:hover {
+            color: white; /* Brighter white on hover */
+        }
+
+        .extra-links a:hover:before {
+            transform-origin: left;
+            transform: scaleX(1);
+        }
+
+        /* Removed dark mode toggle styles as they are not part of the new theme */
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h2>Create Account</h2>
+        <form action="/user/register" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+
+            <div class="extra-links">
+                <p>Already have an account? <a href="/user/login">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Removed the dark mode toggle script -->
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black-bg: #1A1A1A;
+            --dark-gray: #282828;
+            /* Changed for distinct white grid lines, thinner */
+            --white-grid-line: rgba(255, 255, 255, 0.08); /* White with some transparency */
+            --beige-100: #F5E6CC;
+            --beige-80: rgba(245, 230, 204, 0.8);
+            --beige-60: rgba(245, 230, 204, 0.6);
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --mirror-effect-bg: rgba(20, 20, 20, 0.4);
+            --mirror-border: rgba(245, 230, 204, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--beige-80);
+            background-color: var(--black-bg);
+            background-image: 
+                linear-gradient(0deg, transparent 24.5%, var(--white-grid-line) 24.7%, var(--white-grid-line) 25.3%, transparent 25.5%, transparent 74.5%, var(--white-grid-line) 74.7%, var(--white-grid-line) 75.3%, transparent 75.5%, transparent),
+                linear-gradient(90deg, transparent 24.5%, var(--white-grid-line) 24.7%, var(--white-grid-line) 25.3%, transparent 25.5%, transparent 74.5%, var(--white-grid-line) 74.7%, var(--white-grid-line) 75.3%, transparent 75.5%, transparent);
+            background-size: 200px 200px; /* Grid size remains bigger */
+            background-repeat: repeat;
+            animation: backgroundPan 30s linear infinite;
+        }
+
+        @keyframes backgroundPan {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 200px 200px;
+            }
+        }
+
+        .login-container {
+            backdrop-filter: blur(20px) saturate(1.5);
+            background: var(--mirror-effect-bg);
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            width: 380px;
+            max-width: 90%;
+            border: 1px solid var(--mirror-border);
+            position: relative;
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(0deg) scale(1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-container:hover {
+            transform: perspective(1000px) rotateY(3deg) scale(1.03);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            color: var(--beige-100);
+            text-shadow: none;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--beige-60);
+            font-weight: 500;
+        }
+
+        input {
+            width: calc(100% - 1.4rem);
+            padding: 0.8rem 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--input-bg);
+            color: var(--beige-100);
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input::placeholder {
+            color: var(--beige-60);
+            opacity: 0.7;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--beige-100);
+            box-shadow: 0 0 15px rgba(245, 230, 204, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #A88B4E, #D4AF37);
+            color: var(--dark-gray);
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.03em;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(245, 230, 204, 0.3);
+            background: linear-gradient(135deg, #B99C5F, #E0C14D);
+        }
+
+        .btn:hover:before {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+        }
+
+        .extra-links {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--beige-80);
+        }
+
+        .extra-links a {
+            color: var(--beige-100);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .extra-links a:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--beige-100);
+            bottom: -3px;
+            left: 0;
+            transform-origin: right;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .extra-links a:hover {
+            color: white;
+        }
+
+        .extra-links a:hover:before {
+            transform-origin: left;
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Welcome Back</h2>
+        <form action="/user/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username/email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+
+            <div class="extra-links">
+                <p>Don’t have an account? <a href="/user/register">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
