@@ -10,9 +10,9 @@
 
   <style>
     :root{
-      --bg-900: #070606;           /* deep black */
-      --beige-100: #f5e6cc;       /* light beige */
-      --beige-200: #efe1b8;       /* slightly darker beige */
+      --bg-900: #070606;            /* deep black */
+      --beige-100: #f5e6cc;        /* light beige */
+      --beige-200: #efe1b8;        /* slightly darker beige */
       --muted: rgba(245,230,204,0.7);
       --grid: rgba(255,255,255,0.02);
     }
@@ -210,16 +210,16 @@
     }
     .modal.open { display:flex; }
     .modal-card {
-      /* Increased width for policy check modal */
-      width: 700px; /* Increased from 380px */
-      max-width: 90%; /* Ensure responsiveness */
-      padding:25px 30px; /* Slightly more padding */
+      /* Base width for larger screens */
+      width: 700px; 
+      max-width: 90%; /* Ensures it doesn't overflow */
+      padding:25px 30px; 
       border-radius:12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border:1px solid rgba(245,230,204,0.08); color:var(--beige-100);
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
-    .modal-card h3 { margin:0 0 12px 0; font-size:20px; /* Slightly larger heading */ }
+    .modal-card h3 { margin:0 0 12px 0; font-size:20px; }
     .file-input {
       width:100%; padding: 10px; border-radius:8px; border:1px dashed rgba(245,230,204,0.08);
       background: rgba(245,230,204,0.02); color:var(--beige-100);
@@ -229,30 +229,30 @@
     /* Policy Check Modal specific styles */
     .policy-question-input {
         width: 100%;
-        padding: 12px; /* Increased padding */
+        padding: 12px;
         border-radius: 8px;
         border: 1px solid rgba(245,230,204,0.08);
         background: rgba(245,230,204,0.02);
         color: var(--beige-100);
         margin-top: 10px;
         resize: vertical;
-        min-height: 120px; /* Increased min-height */
-        font-size: 1em; /* Ensure readable font size */
+        min-height: 120px;
+        font-size: 1em;
         line-height: 1.5;
     }
     .policy-result-area {
         margin-top: 15px;
-        padding: 15px; /* Increased padding */
+        padding: 15px;
         border-radius: 8px;
         background: rgba(245,230,204,0.02);
         border: 1px dashed rgba(245,230,204,0.05);
-        min-height: 150px; /* Increased min-height for more space */
+        min-height: 150px;
         color: var(--muted);
-        font-size: 1em; /* Ensure readable font size */
-        line-height: 1.6; /* Increased line height for readability */
-        white-space: pre-wrap; /* Preserve whitespace and wrap text */
-        overflow-y: auto; /* Add scroll if content overflows */
-        max-height: 400px; /* Max height for very long responses */
+        font-size: 1em;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        overflow-y: auto;
+        max-height: 400px;
     }
     .loading-spinner {
         border: 4px solid rgba(255, 255, 255, 0.3);
@@ -305,7 +305,9 @@
     }
 
 
-    /* Responsive tweaks */
+    /* --- Responsive Tweaks --- */
+
+    /* General adjustments for smaller screens (tablets and larger phones) */
     @media (max-width: 768px) {
       header {
         padding: 15px 20px;
@@ -368,6 +370,7 @@
         width: 100%;
       }
 
+      /* Modals for 768px and below */
       .modal-card {
           width: 95%; /* Max width on small screens */
           padding: 15px;
@@ -385,6 +388,7 @@
       }
     }
 
+    /* Smaller phones */
     @media (max-width: 480px) {
         header {
             padding: 10px 15px;
@@ -429,7 +433,7 @@
         }
     }
 
-    /* New media query to remove orbit animation on smaller screens */
+    /* Specific media query to hide orbit animation on very small screens */
     @media (max-width: 500px) { /* Adjust this breakpoint as needed for "phone screen" */
         .orbit-wrap {
             display: none; /* Hides the entire orbit animation container */
