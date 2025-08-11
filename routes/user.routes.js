@@ -38,7 +38,7 @@ router.post("/register",
 
         // Set the JWT as a cookie and redirect
         res.cookie('token', token);
-        res.redirect('/home');
+        res.redirect('/');
     });
 
 router.get('/login', (req, res) => {
@@ -70,7 +70,7 @@ router.post('/login',
 
         res.cookie('token', token);
         // Redirect to the home page after successful login
-        res.redirect('/home');
+        res.redirect('/');
     });
 
 

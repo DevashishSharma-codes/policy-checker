@@ -12,7 +12,7 @@ const fetch = require('node-fetch');
 
 // --- EXISTING ROUTES (no changes here) ---
 
-router.get("/home", protect, async (req, res) => {
+router.get("/", protect, async (req, res) => { // Changed from "/home" to "/"
     let files = [];
     if (req.user) {
         try {
@@ -21,6 +21,7 @@ router.get("/home", protect, async (req, res) => {
             console.error('Error fetching user files:', error);
         }
     }
+    // Render the home page (home.ejs)
     res.render('home', { files: files, user: req.user });
 });
 
@@ -55,7 +56,7 @@ router.post('/upload', requireAuth, upload.single('policy'), async (req, res) =>
         await newFile.save();
 
         console.log('File uploaded to Supabase and metadata saved successfully.');
-        res.redirect('/home');
+        res.redirect('/');
     } catch (err) {
         console.error('Server error:', err);
         res.status(500).send('Something went wrong.');
