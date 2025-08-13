@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Policy Portal - Home</title>
+  <title>Policy Checker</title>
 
   <!-- Optional font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -20,425 +20,237 @@
     /* Reset + base */
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-    body{background:var(--bg-900);color:var(--beige-100);overflow-x:hidden; min-height: 100vh; display: flex; flex-direction: column;} /* Added min-height, flex for full page */
+    body{
+      background:var(--bg-900);color:var(--beige-100);overflow-x:hidden;
+      min-height:100vh; display:flex; flex-direction:column;
+    }
 
     /* subtle grid background (fixed) */
     body::before{
-      content:"";
-      position:fixed;inset:0;z-index:0;
+      content:""; position:fixed; inset:0; z-index:0;
       background-image:
         linear-gradient(var(--grid) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 56px 56px;
-      pointer-events:none;
-      opacity:1;
+      pointer-events:none; opacity:1;
     }
 
     /* Page layout */
-    .page { position:relative; min-height:100vh; display:flex; flex-direction:column; z-index:1; flex-grow: 1; } /* flex-grow to fill space */
+    .page { position:relative; min-height:100vh; display:flex; flex-direction:column; z-index:1; flex-grow:1; }
 
     /* Header */
     header{
       display:flex; align-items:center; justify-content:space-between;
-      gap:1rem; padding:18px 48px; 
+      gap:1rem; padding:18px 48px;
       border-bottom:1px solid rgba(245,230,204,0.06);
       background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
-      flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+      flex-wrap:wrap;
     }
     .brand{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.1rem;color:var(--beige-100)}
     .nav { display:flex; gap:26px; align-items:center; }
-    .nav a { color:var(--muted); text-decoration:none; font-weight:600; }
+    .nav a { color:var(--muted); text-decoration:none; font-weight:700; letter-spacing:.2px; }
     .nav a:hover { color:var(--beige-100); }
-    
-    /* Login/Logout Button Styling (Unified) */
+
+    /* Login/Logout Button */
     .auth-button {
       background: linear-gradient(180deg, var(--beige-100), var(--beige-200));
-      color:#0b0b0b;
-      border: none;
-      padding: 8px 18px; 
-      border-radius: 20px; 
-      font-weight:700;
-      cursor:pointer;
-      box-shadow: 0 4px 12px rgba(14,14,14,0.3); 
+      color:#0b0b0b; border:none; padding:8px 18px; border-radius:20px;
+      font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(14,14,14,0.3);
       transition: transform .18s ease, box-shadow .18s;
-      display:inline-flex;
-      align-items:center;
-      font-size:14px; 
-      text-decoration: none; 
-      white-space: nowrap; /* Prevent button text from wrapping */
+      display:inline-flex; align-items:center; font-size:14px; text-decoration:none; white-space:nowrap;
     }
-    .auth-button:hover { 
-      transform: translateY(-2px); 
-      box-shadow: 0 6px 16px rgba(14,14,14,0.4); 
-    }
+    .auth-button:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(14,14,14,0.4); }
 
     .profile {
-      width:40px;height:40px;border-radius:50%;background:var(--beige-100);display:grid;place-items:center;color:#0b0b0b;font-weight:700;
-      box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+      width:40px;height:40px;border-radius:50%;background:var(--beige-100);
+      display:grid;place-items:center;color:#0b0b0b;font-weight:700;
+      box-shadow:0 6px 22px rgba(0,0,0,0.6);
     }
 
     /* HERO */
     .hero {
-      position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding: 48px 24px;
-      min-height: 62vh;
-      flex-grow: 1; /* Allow hero to take available space */
+      position:relative; display:flex; align-items:center; justify-content:center; text-align:center;
+      padding:48px 24px; min-height:62vh; flex-grow:1;
     }
-
     .hero-inner{
-      position:relative;
-      max-width:980px;
-      width:100%;
-      z-index:5; /* on top of orbit */
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
+      position:relative; max-width:980px; width:100%; z-index:5;
+      display:flex; flex-direction:column; align-items:center; gap:18px;
+      padding: 0 8px;
     }
-
     h1 {
-      margin:0;
-      font-size: clamp(32px, 6.5vw, 72px); /* Responsive font size */
-      line-height:1;
-      font-weight:800;
-      letter-spacing: -0.02em;
-      color:var(--beige-100);
-      text-shadow: 0 6px 24px rgba(0,0,0,0.6);
+      margin:0; font-size: clamp(32px, 6.5vw, 72px);
+      line-height:1; font-weight:800; letter-spacing:-0.02em; color:var(--beige-100);
+      text-shadow:0 6px 24px rgba(0,0,0,0.6);
     }
-
     .sub {
-      color:var(--muted);
-      max-width:760px;
-      margin:0 auto;
-      font-size: clamp(14px, 1.6vw, 18px); /* Responsive font size */
+      color:var(--muted); max-width:760px; margin:0 auto; font-size: clamp(14px, 1.6vw, 18px);
     }
-
-    .hero-actions{ display:flex; gap:18px; margin-top:18px; flex-wrap: wrap; justify-content: center; } /* Wrap buttons */
-
+    .hero-actions{ display:flex; gap:18px; margin-top:18px; flex-wrap:wrap; justify-content:center; }
     .btn {
       background: linear-gradient(180deg, var(--beige-100), var(--beige-200));
-      color:#0b0b0b;
-      border: none;
-      padding: 12px 22px;
-      border-radius: 40px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(14,14,14,0.45);
-      transition: transform .18s ease, box-shadow .18s;
-      display:inline-flex;align-items:center;gap:10px;font-size:15px;
-      flex-shrink: 0; /* Prevent shrinking on small screens */
+      color:#0b0b0b; border:none; padding:12px 22px; border-radius:40px;
+      font-weight:700; cursor:pointer; box-shadow:0 10px 30px rgba(14,14,14,0.45);
+      transition: transform .18s ease, box-shadow .18s; display:inline-flex; align-items:center; gap:10px; font-size:15px;
+      flex-shrink:0;
     }
-    .btn:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(14,14,14,0.6); }
+    .btn:hover { transform: translateY(-4px); box-shadow:0 14px 40px rgba(14,14,14,0.6); }
 
-    /* ORBIT (behind main text) */
+    /* ORBIT (behind main text) – responsive & never hidden */
     .orbit-wrap {
-      position:absolute;
-      left:50%; top:50%;
-      width:520px; height:520px;
+      --radius: clamp(110px, 24vmin, 210px); /* dynamic orbit radius */
+      --item: clamp(36px, 6vmin, 56px);      /* dynamic icon size */
+      position:absolute; left:50%; top:50%;
+      width: clamp(280px, 60vmin, 520px);
+      height: clamp(280px, 60vmin, 520px);
       transform: translate(-50%,-50%);
-      z-index:2;       /* behind hero-inner (z-index:5) */
-      pointer-events:none;
-      /* Responsive sizing for orbit */
-      max-width: 90vw;
-      max-height: 90vw;
-      width: clamp(300px, 70vw, 520px);
-      height: clamp(300px, 70vw, 520px);
+      z-index:2; pointer-events:none;
     }
-
-    /* spinning container rotates the ring */
     .orbit {
-      position:relative;
-      width:100%; height:100%;
-      border-radius:50%;
-      transform-origin:center center;
-      animation: rotate-slow 28s linear infinite;
+      position:relative; width:100%; height:100%; border-radius:50%;
+      transform-origin:center center; animation: rotate-slow 28s linear infinite;
     }
+    @keyframes rotate-slow { from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
 
-    @keyframes rotate-slow {
-      from{ transform: rotate(0deg); }
-      to{ transform: rotate(360deg); }
-    }
-
-    /* an orbit item sits at center then translated outward via rotate/translate */
     .orbit .item {
-      position:absolute;
-      left:50%; top:50%;
-      transform-origin: 0 0;
-      /* size */
-      width:56px; height:56px;
-      margin:-28px 0 0 -28px;   /* center the item */
-      display:grid; place-items:center;
-      border-radius:10px;
-      background: rgba(245,230,204,0.06);
-      color:var(--beige-100);
-      box-shadow: 0 8px 22px rgba(0,0,0,0.6);
-      border: 1px solid rgba(245,230,204,0.12);
+      position:absolute; left:50%; top:50%; transform-origin:0 0;
+      width:var(--item); height:var(--item);
+      margin: calc(-1 * var(--item) / 2) 0 0 calc(-1 * var(--item) / 2);
+      display:grid; place-items:center; border-radius:10px;
+      background: rgba(245,230,204,0.06); color:var(--beige-100);
+      box-shadow:0 8px 22px rgba(0,0,0,0.6);
+      border:1px solid rgba(245,230,204,0.12);
       transition: transform .3s;
     }
-
-    /* Keep icon upright: we counter-rotate inside */
-    .orbit .item .inner { transform-origin:center center; font-size:24px; }
-
-    /* positions for 8 items around circle, using rotate(angle) translate(radius) rotate(-angle) */
-    /* radius about 210px inside 520 container */
-    .pos0 { transform: rotate(0deg) translate(0, -40vw) rotate(0deg); } /* Use vw for responsive radius */
-    .pos1 { transform: rotate(45deg) translate(0, -40vw) rotate(-45deg); }
-    .pos2 { transform: rotate(90deg) translate(0, -40vw) rotate(-90deg); }
-    .pos3 { transform: rotate(135deg) translate(0, -40vw) rotate(-135deg); }
-    .pos4 { transform: rotate(180deg) translate(0, -40vw) rotate(-180deg); }
-    .pos5 { transform: rotate(225deg) translate(0, -40vw) rotate(-225deg); }
-    .pos6 { transform: rotate(270deg) translate(0, -40vw) rotate(-270deg); }
-    .pos7 { transform: rotate(315deg) translate(0, -40vw) rotate(-315deg); }
-
-    /* slight hover pop for each item (won't interfere with click because pointer-events none on wrapper) */
+    .orbit .item .inner { transform-origin:center center; font-size: clamp(18px, 3.4vmin, 24px); }
     .orbit .item:hover { transform: scale(1.06); }
 
-    /* Smaller icon label area under buttons (optional) */
-    .hero-extra { margin-top: 10px; color: rgba(245,230,204,0.5); font-size:13px; }
+    /* exact positions with a responsive radius */
+    .pos0 { transform: rotate(0deg)   translate(0, calc(-1 * var(--radius))) rotate(0deg); }
+    .pos1 { transform: rotate(45deg)  translate(0, calc(-1 * var(--radius))) rotate(-45deg); }
+    .pos2 { transform: rotate(90deg)  translate(0, calc(-1 * var(--radius))) rotate(-90deg); }
+    .pos3 { transform: rotate(135deg) translate(0, calc(-1 * var(--radius))) rotate(-135deg); }
+    .pos4 { transform: rotate(180deg) translate(0, calc(-1 * var(--radius))) rotate(-180deg); }
+    .pos5 { transform: rotate(225deg) translate(0, calc(-1 * var(--radius))) rotate(-225deg); }
+    .pos6 { transform: rotate(270deg) translate(0, calc(-1 * var(--radius))) rotate(-270deg); }
+    .pos7 { transform: rotate(315deg) translate(0, calc(-1 * var(--radius))) rotate(-315deg); }
+
+    .hero-extra { margin-top:10px; color: rgba(245,230,204,0.5); font-size:13px; }
 
     /* Modal (upload & policy check) */
     .modal {
-      display:none;
-      position:fixed; inset:0; z-index:60;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
+      display:none; position:fixed; inset:0; z-index:60;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
       align-items:center; justify-content:center;
+      padding: 10px;
     }
     .modal.open { display:flex; }
     .modal-card {
-      /* Base width for larger screens */
-      width: 700px; 
-      max-width: 90%; /* Ensures it doesn't overflow */
-      padding:25px 30px; 
-      border-radius:12px;
+      width: 700px; max-width: 90%;
+      padding:25px 30px; border-radius:12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border:1px solid rgba(245,230,204,0.08); color:var(--beige-100);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      box-shadow:0 20px 60px rgba(0,0,0,0.6);
     }
     .modal-card h3 { margin:0 0 12px 0; font-size:20px; }
     .file-input {
-      width:100%; padding: 10px; border-radius:8px; border:1px dashed rgba(245,230,204,0.08);
+      width:100%; padding: 10px; border-radius:8px;
+      border:1px dashed rgba(245,230,204,0.08);
       background: rgba(245,230,204,0.02); color:var(--beige-100);
     }
     .close-x { position:absolute; right:18px; top:18px; color:rgba(245,230,204,0.6); cursor:pointer; font-weight:700; }
-    
-    /* Policy Check Modal specific styles */
+
+    /* Policy Check Modal */
     .policy-question-input {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(245,230,204,0.08);
-        background: rgba(245,230,204,0.02);
-        color: var(--beige-100);
-        margin-top: 10px;
-        resize: vertical;
-        min-height: 120px;
-        font-size: 1em;
-        line-height: 1.5;
+      width:100%; padding:12px; border-radius:8px;
+      border:1px solid rgba(245,230,204,0.08);
+      background: rgba(245,230,204,0.02); color:var(--beige-100);
+      margin-top:10px; resize:vertical; min-height:120px; font-size:1em; line-height:1.5;
     }
     .policy-result-area {
-        margin-top: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        background: rgba(245,230,204,0.02);
-        border: 1px dashed rgba(245,230,204,0.05);
-        min-height: 150px;
-        color: var(--muted);
-        font-size: 1em;
-        line-height: 1.6;
-        white-space: pre-wrap;
-        overflow-y: auto;
-        max-height: 400px;
+      margin-top:15px; padding:15px; border-radius:8px;
+      background: rgba(245,230,204,0.02);
+      border:1px dashed rgba(245,230,204,0.05);
+      min-height:150px; color:var(--muted); font-size:1em; line-height:1.6;
+      white-space:pre-wrap; overflow-y:auto; max-height:400px;
     }
     .loading-spinner {
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top: 4px solid var(--beige-100);
-        width: 20px;
-        height: 20px;
-        -webkit-animation: spin 1s linear infinite; /* Safari */
-        animation: spin 1s linear infinite;
-        margin-left: 10px;
+      border:4px solid rgba(255,255,255,0.3); border-radius:50%;
+      border-top:4px solid var(--beige-100); width:20px; height:20px;
+      -webkit-animation: spin 1s linear infinite; animation: spin 1s linear infinite; margin-left:10px;
     }
+    @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* Safari */
-    @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* File card adjustments for policy check button */
+    /* File list cards */
     .file-card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding:14px;border-radius:10px;background:rgba(255,255,255,0.015);border:1px solid rgba(245,230,204,0.03);
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:14px; border-radius:10px; background:rgba(255,255,255,0.015);
+      border:1px solid rgba(245,230,204,0.03);
     }
     .file-card-actions {
-        margin-top: 10px;
-        display: flex;
-        gap: 8px;
-        justify-content: flex-end;
+      margin-top:10px; display:flex; gap:8px; justify-content:flex-end;
     }
-    .file-card .btn { /* Reuse existing btn styles with adjustments */
-        padding: 6px 12px;
-        font-size: 13px;
-        border-radius: 6px;
-        background: var(--beige-100); /* Use beige directly for smaller button */
-        color: var(--bg-900);
-        box-shadow: none;
-        transition: background 0.2s ease, transform 0.1s ease;
+    .file-card .btn {
+      padding:6px 12px; font-size:13px; border-radius:6px;
+      background: var(--beige-100); color: var(--bg-900);
+      box-shadow:none; transition: background 0.2s ease, transform 0.1s ease;
     }
-    .file-card .btn:hover {
-        background: var(--beige-200);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-
+    .file-card .btn:hover { background: var(--beige-200); transform: translateY(-1px); box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
     /* --- Responsive Tweaks --- */
+    @media (max-width: 900px) {
+      .orbit-wrap { --radius: clamp(95px, 26vmin, 190px); }
+    }
 
-    /* General adjustments for smaller screens (tablets and larger phones) */
     @media (max-width: 768px) {
       header {
-        padding: 15px 20px;
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align items to the start */
-        gap: 15px;
+        padding: 15px 20px; flex-direction: column; align-items: center; gap: 10px;
       }
-      .nav {
-        gap: 15px;
-        flex-wrap: wrap;
-        width: 100%;
-        justify-content: center;
+      .nav { gap:16px; flex-wrap:wrap; justify-content:center; }
+      .hero { padding: 36px 16px; min-height: 56vh; }
+      h1 { font-size: clamp(28px, 8vw, 54px); }
+      .sub { font-size: clamp(13px, 3.5vw, 17px); }
+      .hero-actions { flex-direction: column; gap: 10px; }
+      .btn { width: 86%; margin: 0 auto; }
+      .orbit-wrap {
+        width: clamp(240px, 70vmin, 420px);
+        height: clamp(240px, 70vmin, 420px);
+        --radius: clamp(85px, 28vmin, 170px);
       }
-      .brand, .auth-button, .profile {
-        width: 100%; /* Take full width on small screens */
-        text-align: center;
-        justify-content: center; /* Center brand text */
+      section { padding: 22px 16px; }
+      .file-card { padding: 12px; }
+      .file-card-actions { flex-direction: column; gap: 6px; }
+      .file-card .btn { width: 100%; }
+      .modal-card { width: 95%; padding: 16px; }
+      .modal-card h3 { font-size: 18px; }
+      .policy-question-input, .policy-result-area {
+        min-height: 100px; padding: 10px; font-size: 0.95em;
       }
-      .brand { margin-bottom: 10px; } /* Add space below brand when stacked */
-      .auth-button { margin-top: 10px; } /* Space above button when stacked */
+      .policy-result-area { max-height: 320px; }
+    }
 
-      .hero {
-        padding: 30px 15px;
-        min-height: 50vh;
-      }
-      h1 {
-        font-size: clamp(28px, 8vw, 48px);
-      }
-      .sub {
-        font-size: clamp(13px, 3.5vw, 16px);
-      }
-      .hero-actions {
-        flex-direction: column; /* Stack hero buttons */
-        gap: 10px;
-      }
-      .btn {
-        width: 80%; /* Make buttons narrower */
-        margin: 0 auto; /* Center buttons */
-      }
+    @media (max-width: 480px) {
+      header { padding: 12px 14px; }
+      .brand, .nav, .auth-button, .profile { font-size: 0.95rem; }
+      .nav { gap: 12px; }
+      .hero { padding: 24px 12px; }
+      h1 { font-size: clamp(24px, 10vw, 40px); }
+      .sub { font-size: clamp(12px, 4vw, 15px); }
+      .btn { padding: 10px 18px; font-size: 14px; width: 92%; }
 
       .orbit-wrap {
-        width: clamp(250px, 80vw, 380px);
-        height: clamp(250px, 80vw, 380px);
+        width: clamp(220px, 78vmin, 340px);
+        height: clamp(220px, 78vmin, 340px);
+        --radius: clamp(72px, 30vmin, 150px);
+        --item: clamp(30px, 7vmin, 46px);
       }
-      .pos0,.pos1,.pos2,.pos3,.pos4,.pos5,.pos6,.pos7 {
-        transform: rotate(var(--r,0deg)) translate(0, -35vw) rotate(0deg); /* Adjust radius for smaller orbit */
-      }
-
-      section {
-        padding: 20px 15px;
-      }
-      .file-card {
-        padding: 10px;
-      }
-      .file-card-actions {
-        flex-direction: column; /* Stack check policy button */
-        gap: 5px;
-      }
-      .file-card .btn {
-        width: 100%;
-      }
-
-      /* Modals for 768px and below */
-      .modal-card {
-          width: 95%; /* Max width on small screens */
-          padding: 15px;
-      }
-      .modal-card h3 {
-          font-size: 18px;
-      }
-      .policy-question-input, .policy-result-area {
-          min-height: 100px; /* Adjust min-height for smaller screens */
-          padding: 10px;
-          font-size: 0.9em;
-      }
-      .policy-result-area {
-          max-height: 300px; /* Adjust max height for smaller screens */
-      }
+      section { padding: 16px 12px; }
+      .file-card { padding: 10px; font-size: 0.95em; }
+      .file-card .btn { padding: 6px 10px; font-size: 12px; }
     }
 
-    /* Smaller phones */
-    @media (max-width: 480px) {
-        header {
-            padding: 10px 15px;
-        }
-        .brand, .nav, .auth-button, .profile {
-            font-size: 0.9rem;
-        }
-        .nav {
-            gap: 10px;
-        }
-        .hero {
-            padding: 20px 10px;
-        }
-        h1 {
-            font-size: clamp(24px, 10vw, 36px);
-        }
-        .sub {
-            font-size: clamp(12px, 4vw, 14px);
-        }
-        .btn {
-            padding: 10px 18px;
-            font-size: 14px;
-            width: 90%;
-        }
-        .orbit-wrap {
-            width: clamp(200px, 90vw, 300px);
-            height: clamp(200px, 90vw, 300px);
-        }
-        .pos0,.pos1,.pos2,.pos3,.pos4,.pos5,.pos6,.pos7 {
-            transform: rotate(var(--r,0deg)) translate(0, -30vw) rotate(0deg); /* Further adjust radius */
-        }
-        section {
-            padding: 15px 10px;
-        }
-        .file-card {
-            padding: 10px;
-            font-size: 0.9em;
-        }
-        .file-card .btn {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-    }
-
-    /* Specific media query to hide orbit animation on very small screens */
-    @media (max-width: 500px) { /* Adjust this breakpoint as needed for "phone screen" */
-        .orbit-wrap {
-            display: none; /* Hides the entire orbit animation container */
-        }
-    }
+    /* IMPORTANT: we no longer hide the orbit animation on small screens */
+    /* (Removed: @media (max-width: 500px) { .orbit-wrap { display: none; } }) */
   </style>
 </head>
 <body>
@@ -446,22 +258,34 @@
 
     <!-- HEADER -->
     <header>
-      <div class="brand">📜 <span style="letter-spacing:0.6px">Policy Portal</span></div>
+   <div class="brand">
+  📜 <span style="letter-spacing:0.6px">
+    <a href="/" class="brand-link">Policy Portal</a>
+  </span>
+</div>
 
-      <nav class="nav" aria-label="Main nav">
-        <a href="/">Home</a> <!-- Changed to / for root route -->
-        <a href="#">Policies</a>
-        <a href="#">About</a>
-      </nav>
-      
+<style>
+  .brand-link {
+    color: inherit;        /* Matches parent text color */
+    text-decoration: none; /* Removes underline */
+    cursor: pointer;       /* Shows pointer on hover */
+  }
+
+  .brand-link:hover {
+    text-decoration: underline; /* Optional: underline only on hover */
+  }
+</style>
+
+    
+
       <% if (user) { %>
-        <!-- If user is logged in, show Logout button and Profile initial -->
+        <!-- Logged in -->
         <a href="/user/logout" class="auth-button">Logout</a>
         <div class="profile" title="Profile"><%= user.username ? user.username.charAt(0).toUpperCase() : 'P' %></div>
       <% } else { %>
-        <!-- If user is NOT logged in, show Login button -->
+        <!-- Guest -->
         <a href="/user/login" class="auth-button">Login</a>
-        <div class="profile" title="Profile">?</div> <!-- Placeholder for guest profile -->
+        <div class="profile" title="Profile">?</div>
       <% } %>
     </header>
 
@@ -490,7 +314,7 @@
 
         <div class="hero-actions">
           <button class="btn" id="openUploadBtn">📤 Upload Form</button>
-          <button class="btn" id="viewBtn">📄 View Details</button>
+          <!-- Removed the "View Details" button -->
         </div>
 
         <div class="hero-extra">Trusted · Secure · Fast checks</div>
@@ -583,7 +407,7 @@
                 uploadModal.setAttribute('aria-hidden','false');
             });
         }
-        
+
         closeUploadModal.addEventListener('click', () => {
             uploadModal.classList.remove('open');
             uploadModal.setAttribute('aria-hidden','true');
@@ -601,10 +425,9 @@
           }
         });
 
-        /* Accessibility: pause orbit animation while interacting (optional) */
+        /* Accessibility/UX: pause orbit animation while hovering upload (optional) */
         const orbit = document.querySelector('.orbit');
         if (openUploadBtn && orbit) {
-            // Corrected variable name from openBtn to openUploadBtn
             openUploadBtn.addEventListener('mouseenter', ()=> orbit.style.animationPlayState='paused');
             openUploadBtn.addEventListener('mouseleave', ()=> orbit.style.animationPlayState='running');
         }
@@ -619,7 +442,7 @@
         const loadingPolicyCheck = document.getElementById('loadingPolicyCheck');
         let currentFileId = null; // Store the ID of the file being checked
 
-        // This ensures the buttons are found after the DOM is ready
+        // Attach click handlers for "Check Policy" buttons
         document.querySelectorAll('.check-policy-btn').forEach(button => {
             button.addEventListener('click', (event) => {
                 currentFileId = event.target.dataset.fileId;
@@ -663,9 +486,7 @@
             try {
                 const response = await fetch(`/check-policy/${currentFileId}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ policyQuestion: question })
                 });
 
@@ -681,7 +502,7 @@
                 console.error('Policy check error:', error);
                 policyResultArea.textContent = 'Error: ' + error.message;
             } finally {
-                loadingPolicyCheck.style.display = 'none'; // Hide spinner
+                loadingPolicyCheck.style.display = 'none';
                 submitPolicyCheckBtn.disabled = false; // Re-enable button
             }
         });

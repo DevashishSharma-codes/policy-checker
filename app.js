@@ -1,9 +1,6 @@
-// server.js
 
-// 1. ALWAYS the very first line to load environment variables
 require('dotenv').config();
 
-// 2. Now you can safely require other modules that might depend on env variables
 const express = require('express');
 const app = express();
 const userRouter = require('./routes/user.routes');

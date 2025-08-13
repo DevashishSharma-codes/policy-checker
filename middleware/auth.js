@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model'); // Ensure this path is correct
+const User = require('../models/user.model'); 
 
 const protect = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        // If there's no token, we can't find a user.
-        // We'll proceed without a user and let the route handle it.
+      
         req.user = null;
         return next();
     }
@@ -16,14 +15,14 @@ const protect = async (req, res, next) => {
         const user = await User.findById(decoded.id).select('-password');
 
         if (!user) {
-            req.user = null; // User from token not found
+            req.user = null; 
             return next();
         }
 
-        req.user = user; // User is found, attach to request
+        req.user = user; 
         next();
     } catch (error) {
-        // Token is invalid, expired, etc.
+       
         console.error('Token verification failed:', error);
         req.user = null;
         next();
@@ -31,7 +30,7 @@ const protect = async (req, res, next) => {
 };
 
 const requireAuth = async (req, res, next) => {
-    // This middleware is for routes that absolutely require authentication.
+   
     const token = req.cookies.token;
 
     if (!token) {

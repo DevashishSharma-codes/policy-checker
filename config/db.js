@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dbURL = process.env.ATLAS_URI;
+const dbURL = process.env.DB_URL || 'mongodb://0.0.0.0/drive'; // Replace with your actual DB URL
 function connectDb(){
     mongoose.connect(dbURL)
     .then(()=>{
