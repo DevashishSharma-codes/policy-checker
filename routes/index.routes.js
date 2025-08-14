@@ -89,26 +89,34 @@ router.post('/check-policy/:fileId', requireAuth, async (req, res) => {
         const data = await PDFParse(pdfBuffer);
         const pdfText = data.text;
 
-        // --- AUGMENTED PROMPT HERE ---
-        const prompt = `You are an expert insurance policy analyst. Your primary goal is to determine the applicability of an insurance policy for a given scenario based *solely* on the provided document text.
+// --- SPECIFIC PDF QUERY SOLVER AGENT PROMPT ---
+const prompt = `You are an intelligent document query-solving agent. 
+Your job is to read the provided PDF text and accurately answer the user's question based ONLY on that text. 
+You can handle:
+- Insurance and policy-related questions (eligibility, coverage, waiting periods, exclusions)
+- Legal/contract queries (clauses, obligations, rights, penalties)
+- Instructional/manual queries (steps, procedures, troubleshooting)
+- General factual lookups from the document
 
-Policy Document Text:
+Do NOT guess or use outside information. If the document does not contain enough details, clearly state that.
+
+Document Text:
 """
 ${pdfText}
 """
 
-User's Scenario/Query: "${policyQuestion}"
+User's Query: "${policyQuestion}"
 
-Based *only* on the provided policy document, please provide your analysis.
-1.  **Applicability:** State clearly and concisely whether the policy is applicable ('Yes', 'No'). **Prioritize 'Yes' or 'No' if any relevant information (including conditions, benefits, exclusions, or waiting periods) allows for a conclusion.** Use 'Cannot Determine' only if the document provides absolutely no information to make any judgment, or if the scenario requires external details not found in the document.
-2.  **Reasoning:** Explain your conclusion in detail.
-    * If 'Yes' or 'No', reference specific sections, clauses, or definitions from the provided policy text that support your answer.
-    * If 'Cannot Determine', explicitly state what crucial information is *missing* from the document that prevents a definitive 'Yes' or 'No'.
-3.  **Relevant Clauses:** Quote or paraphrase the exact sections or clauses from the document that are most relevant to your analysis.
+Respond with:
+1. **Answer:** A clear, specific response to the query.  
+   * If the query is a yes/no type (e.g., eligibility), respond with 'Yes', 'No', or 'Cannot Determine'.  
+   * If it’s informational, summarize the relevant details directly from the document.  
+2. **Reasoning:** Explain how you arrived at your answer, citing the exact lines, clauses, or sections from the document.  
+3. **Key Extracts:** Quote the most relevant text that supports your answer.
 
-Keep your response professional and easy to understand for a policyholder.`;
-        // --- END AUGMENTED PROMPT ---
-
+Keep your tone precise, professional, and easy to understand. 
+Never include information not explicitly stated in the document.`;
+// --- END SPECIFIC PDF QUERY SOLVER AGENT PROMPT ---
         const payload = {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
         };
