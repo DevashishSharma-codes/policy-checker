@@ -1,6 +1,6 @@
-Docu-Insight: AI-Powered Document Query Platform
+Policy Checker: AI-Powered Document Query Platform
 📄 Chat with Your Documents, Get Instant Answers
-Docu-Insight is a web application that transforms your static PDF documents into dynamic, searchable knowledge bases. Leveraging advanced AI, it allows you to ask natural language questions about your uploaded documents and receive precise, evidence-backed answers directly from the text.
+Policy Checker is a web application that transforms your static PDF documents into dynamic, searchable knowledge bases. Leveraging advanced AI, it allows you to ask natural language questions about your uploaded documents and receive precise, evidence-backed answers directly from the text.
 
 ✨ Features
 Secure Document Upload: Easily upload your PDF documents (e.g., insurance policies, legal contracts, resumes) to a secure cloud storage powered by Supabase.
@@ -16,7 +16,7 @@ AI-Powered Contextual Answers: Get accurate and highly relevant responses genera
 Transparent Justification: Each answer is accompanied by exact quotes or clauses directly from your uploaded document, ensuring trustworthiness and allowing for easy verification.
 
 💡 How It Works (Behind the Scenes)
-Docu-Insight is built on a Retrieval-Augmented Generation (RAG) architecture, which combines the power of information retrieval with cutting-edge generative AI.
+Policy Checker is built on a Retrieval-Augmented Generation (RAG) architecture, which combines the power of information retrieval with cutting-edge generative AI.
 
 Document Ingestion (Retrieval Phase):
 
