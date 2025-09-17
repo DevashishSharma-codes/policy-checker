@@ -15,8 +15,8 @@ AI-Powered Contextual Answers: Get accurate and highly relevant responses genera
 
 Transparent Justification: Each answer is accompanied by exact quotes or clauses directly from your uploaded document, ensuring trustworthiness and allowing for easy verification.
 
-💡 How It Works (Behind the Scenes)
-Policy Checker is built on a Retrieval-Augmented Generation (RAG) architecture, which combines the power of information retrieval with cutting-edge generative AI.
+💡 How It Works (Behind the Scenes) 
+Policy Checker is built on a Retrieval-Augmented Generation (RAG) architecture type system , which combines the power of information retrieval with cutting-edge generative AI.
 
 Document Ingestion (Retrieval Phase):
 
